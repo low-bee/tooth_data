@@ -14,11 +14,13 @@ if __name__ == '__main__':
     """
 
     # Tuple[numpy.ndarray[float64[4, 1]], List[int]]
-    res = pcd.segment_plane(distance_threshold=0.02, ransac_n=14, num_iterations=500)
+    res = pcd.segment_plane(distance_threshold=0.05, ransac_n=14, num_iterations=450)
+
     a, b, c, d = res[0]
     inlier_cloud = pcd.select_by_index(res[1])
     inlier_cloud.paint_uniform_color([0, 1.0, 0])
     kd = o3d.geometry.KDTreeFlann(pcd)
+
     # 可视化显示
     for i in res[1]:
         # 选点
@@ -34,8 +36,11 @@ if __name__ == '__main__':
     outlier_cloud = pcd.select_by_index(res[1], invert=True)
     outlier_cloud.paint_uniform_color([179 / 256, 49 / 256, 52 / 256])
 
+    # print(res)
     o3d.visualization.draw_geometries([inlier_cloud, outlier_cloud])
-    #print(res)
-    o3d.visualization.draw_geometries([pcd], window_name="tooth", mesh_show_wireframe=True)
+
+    o3d.visualization.draw_geometries([inlier_cloud])
+
+    print(inlier_cloud)
 
 
